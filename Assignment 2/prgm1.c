@@ -1,5 +1,6 @@
 #include <pthread.h>
 #include <stdio.h>
+#include<unistd.h>
 
 int sum = 0;
 int n;
