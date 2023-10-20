@@ -1,33 +1,54 @@
-#include <pthread.h>
 #include <stdio.h>
-#include<unistd.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-int sum = 0;
-int n;
+void *thread_function(void *arg)
+{
+    int upper_limit = *((int *)arg);
+    int sum=0;
+     for(int i=1; i<=upper_limit; i++)
+    {
 
-void *sum_thread(void *arg) {
-      for (int i = 1; i <= n; i++) {
-            sum += i;
-      }
-        pthread_exit(NULL);
+        sum = sum + i;
+
+    }
+
+    printf("Thread ID: %lu, Sum of first %d numbers: %d\n", pthread_self(), upper_limit, sum);
+    pthread_exit(NULL);
+
 }
 
-int main() {
-      pthread_t tid;
-        pid_t pid = getpid();
+int main()
+{
 
-          printf("Main thread PID: %d\n", pid);
+    pid_t pid = getpid();
 
-            pthread_create(&tid, NULL, sum_thread, NULL);
+    printf("Main Thread PID: %d\n", pid);
 
-              printf("Thread ID: %lu\n", tid);
+     int upper_limit;
 
-                pthread_join(tid, NULL);
+    printf("Enter the upper limit for summation: ");
 
-                  printf("Sum of first %d numbers: %d\n", n, sum);
+    scanf("%d", &upper_limit);
 
-                    return 0;
-}
-}
-      }
+     pthread_t t1;
+
+    int rc;
+
+    rc = pthread_create(&t1, NULL, thread_function, (void *)&upper_limit);
+
+    if(rc)
+
+    {
+
+        printf("Error creating thread; return code: %d\n", rc);
+
+        exit(-1);
+
+    }
+    pthread_join(t1, NULL);
+
+    return 0;
+
 }
