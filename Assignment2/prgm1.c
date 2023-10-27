@@ -23,23 +23,14 @@ int main()
 {
 
     pid_t pid = getpid();
-
     printf("Main Thread PID: %d\n", pid);
-
-     int upper_limit;
-
+    int upper_limit;
     printf("Enter the upper limit for summation: ");
-
     scanf("%d", &upper_limit);
-
-     pthread_t t1;
-
+    pthread_t t1;
     int rc;
-
     rc = pthread_create(&t1, NULL, thread_function, (void *)&upper_limit);
-
     if(rc)
-
     {
 
         printf("Error creating thread; return code: %d\n", rc);
